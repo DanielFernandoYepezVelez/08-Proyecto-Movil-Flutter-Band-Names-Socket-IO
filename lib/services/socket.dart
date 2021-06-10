@@ -7,9 +7,13 @@ class SocketService with ChangeNotifier {
   ServerStatus _serverStatus = ServerStatus.Connecting;
   late IO.Socket _socket;
 
+  /* Exponer La Propiedad Privada Del _serverstatus */
   ServerStatus get serverStatus => this._serverStatus;
 
+  /* Exponer La Propiedad Privada Del _socket */
   IO.Socket get socket => this._socket;
+
+  /* Emitir El Nombre Del Evento Al Server */
   Function get emit => this._socket.emit;
 
   SocketService() {
@@ -40,6 +44,10 @@ class SocketService with ChangeNotifier {
       this._serverStatus = ServerStatus.Offline;
       print('Desconectado Por Socket Sever');
       notifyListeners();
+    });
+
+    this._socket.on('nuevo-mensaje', (payload) {
+      print('Nuevo Mensaje: $payload');
     });
   }
 }
