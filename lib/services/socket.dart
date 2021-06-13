@@ -22,7 +22,7 @@ class SocketService with ChangeNotifier {
 
   void _initConfig() {
     // Dart client
-    String urlSocket = 'http://192.168.1.8:3000';
+    String urlSocket = 'https://server-node-socket-flutter.herokuapp.com/';
 
     this._socket = IO.io(
         urlSocket,
