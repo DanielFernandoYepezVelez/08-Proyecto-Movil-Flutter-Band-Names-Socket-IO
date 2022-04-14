@@ -1,27 +1,26 @@
-import 'dart:ffi';
 import 'dart:io';
-import 'package:provider/provider.dart';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 import 'package:band_names/services/socket.dart';
 
-import 'package:band_names/models/band.dart';
+/* Band Model */
+import 'package:band_names/models/models.dart';
 
-class HomePage extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
-  List<Band> bands = [];
+class _HomeScreenState extends State<HomeScreen> {
+  List<BandModel> bands = [];
   /* [
-    Band(id: '1', name: 'Metalica', votes: 5),
-    Band(id: '2', name: 'Queen', votes: 1),
-    Band(id: '3', name: 'Héroes Del Silencio', votes: 2),
-    Band(id: '4', name: 'Bon Jovi', votes: 4),
+    BandModel(id: '1', name: 'Metalica', votes: 5),
+    BandModel(id: '2', name: 'Queen', votes: 1),
+    BandModel(id: '3', name: 'Héroes Del Silencio', votes: 2),
+    BandModel(id: '4', name: 'Bon Jovi', votes: 4),
   ]; */
 
   /* Se Ejecuta Una Sola Vez */
@@ -36,7 +35,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   _handleActiveBands(dynamic payload) {
-    this.bands = (payload as List).map((band) => Band.fromMap(band)).toList();
+    this.bands =
+        (payload as List).map((band) => BandModel.fromMap(band)).toList();
     setState(() {});
   }
 
@@ -54,10 +54,10 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text('BandNames', style: TextStyle(color: Colors.black87)),
-        backgroundColor: Colors.white,
         elevation: 1,
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        title: Text('BandNames', style: TextStyle(color: Colors.black87)),
         actions: [
           Container(
             margin: EdgeInsets.only(right: 10),
@@ -79,20 +79,21 @@ class _HomePageState extends State<HomePage> {
           Expanded(
             child: ListView.builder(
               itemCount: bands.length,
-              itemBuilder: (context, index) => _bandTile(bands[index]),
+              itemBuilder: (BuildContext context, int index) =>
+                  _bandTile(bands[index]),
             ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
         elevation: 1,
         onPressed: addNewBand,
+        child: Icon(Icons.add),
       ),
     );
   }
 
-  Widget _bandTile(Band band) {
+  Widget _bandTile(BandModel band) {
     final socketService = Provider.of<SocketService>(context, listen: false);
 
     return Dismissible(
@@ -102,8 +103,8 @@ class _HomePageState extends State<HomePage> {
       No Cuando Se Inicie Este Componente */
       onDismissed: (_) => socketService.emit('delete-band', {'id': band.id}),
       background: Container(
-        padding: EdgeInsets.only(left: 8),
         color: Colors.blue,
+        padding: EdgeInsets.only(left: 8),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
@@ -114,8 +115,8 @@ class _HomePageState extends State<HomePage> {
       ),
       child: ListTile(
         leading: CircleAvatar(
-          child: Text(band.name.substring(0, 2)),
           backgroundColor: Colors.blue[100],
+          child: Text(band.name.substring(0, 2)),
         ),
         title: Text(band.name),
         trailing: Text('${band.votes}', style: TextStyle(fontSize: 20)),
@@ -160,8 +161,8 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           MaterialButton(
-            child: Text('Add'),
             elevation: 5,
+            child: Text('Add'),
             textColor: Colors.blue,
             onPressed: () => addBandToList(textController.text),
           ),
@@ -196,34 +197,35 @@ class _HomePageState extends State<HomePage> {
     ]; */
 
     return Container(
-        width: double.infinity,
-        height: 200,
-        child: PieChart(
-          dataMap: dataMap,
-          animationDuration: Duration(milliseconds: 800),
-          chartLegendSpacing: 32,
-          chartRadius: MediaQuery.of(context).size.width / 3.2,
-          // colorList: colorList,
-          initialAngleInDegree: 0,
-          chartType: ChartType.ring,
-          ringStrokeWidth: 32,
-          centerText: "HYBRID",
-          legendOptions: LegendOptions(
-            showLegendsInRow: false,
-            legendPosition: LegendPosition.right,
-            showLegends: true,
-            // legendShape: _BoxShape.circle,
-            legendTextStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+      width: double.infinity,
+      height: 200,
+      child: PieChart(
+        dataMap: dataMap,
+        animationDuration: Duration(milliseconds: 800),
+        chartLegendSpacing: 32,
+        chartRadius: MediaQuery.of(context).size.width / 3.2,
+        // colorList: colorList,
+        initialAngleInDegree: 0,
+        chartType: ChartType.ring,
+        ringStrokeWidth: 32,
+        centerText: "HYBRID",
+        legendOptions: LegendOptions(
+          showLegendsInRow: false,
+          legendPosition: LegendPosition.right,
+          showLegends: true,
+          // legendShape: _BoxShape.circle,
+          legendTextStyle: TextStyle(
+            fontWeight: FontWeight.bold,
           ),
-          chartValuesOptions: ChartValuesOptions(
-            showChartValueBackground: true,
-            showChartValues: true,
-            showChartValuesInPercentage: false,
-            showChartValuesOutside: false,
-            decimalPlaces: 1,
-          ),
-        ));
+        ),
+        chartValuesOptions: ChartValuesOptions(
+          showChartValueBackground: true,
+          showChartValues: true,
+          showChartValuesInPercentage: false,
+          showChartValuesOutside: false,
+          decimalPlaces: 1,
+        ),
+      ),
+    );
   }
 }

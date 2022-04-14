@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:band_names/services/socket.dart';
 
-class StatusPage extends StatelessWidget {
+class StatusScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final socketService = Provider.of<SocketService>(context);
