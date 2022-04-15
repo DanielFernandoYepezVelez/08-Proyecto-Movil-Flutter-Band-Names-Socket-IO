@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:band_names/services/socket.dart';
+/* Socket Service */
+import 'package:band_names/services/services.dart';
 
 /* Screens */
 import 'package:band_names/screens/screens.dart';

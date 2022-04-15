@@ -4,7 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:pie_chart/pie_chart.dart';
 
-import 'package:band_names/services/socket.dart';
+/* Socket Service */
+import 'package:band_names/services/services.dart';
 
 /* Band Model */
 import 'package:band_names/models/models.dart';
